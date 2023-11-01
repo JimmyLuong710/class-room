@@ -3,7 +3,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from 'app.module';
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import * as fs from 'fs';
 import { ResponseTransformInterceptor } from 'modules/shared/interceptors/response.interceptor';
 import { HttpExceptionFilter } from 'modules/shared/filters/http-exception.filter';
 
@@ -38,16 +37,6 @@ async function setupSwagger(app: INestApplication): Promise<void> {
 
   const options = docBuilder.build();
   const document = SwaggerModule.createDocument(app, options);
-
-  try {
-    const outputSwaggerFile = `${process.cwd()}/output-specs/lagom-admin.json`;
-    fs.writeFileSync(outputSwaggerFile, JSON.stringify(document, null, 2), {
-      encoding: 'utf8',
-    });
-    console.log('write outputSwaggerFile');
-  } catch (e) {
-    console.warn(`Could not write swagger docs to file: ${e}`);
-  }
 
   SwaggerModule.setup(`${configService.get('app.prefix')}/docs`, app, document, {
     customSiteTitle: configService.get('app.name'),

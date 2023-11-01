@@ -5,12 +5,12 @@ import { registerAs } from '@nestjs/config';
 const localServers = [
   {
     url: `http://localhost:${process.env.APP_PORT || '3001'}`,
-    description: 'Lagom Admin Local Server',
+    description: 'Class room Server',
   },
 ];
 const devServers = [
   {
-    url: 'https://api-staging.lagom.exchange',
+    url: `http://localhost:${process.env.APP_PORT || '3001'}`,
     description: 'Class room Server',
   },
 ];
@@ -26,8 +26,8 @@ const getServers = () => {
 export default registerAs('app', () => ({
   port: process.env.APP_PORT,
   env: process.env.NODE_ENV,
-  prefix: process.env.APP_PREFIX || 'lagom-admin',
-  name: process.env.APP_NAME || 'lagom-admin',
+  prefix: process.env.APP_PREFIX || 'class-room',
+  name: process.env.APP_NAME || 'class-room',
   swagger: {
     servers: getServers(),
   },
