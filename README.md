@@ -32,14 +32,15 @@
 $ npm install
 ```
 
-
-## Migration
+## Setup env
 ```bash
-# Generate migration file
-npm run migration:generate --name=[file-name]
+# copy .env.example to .env
+$ cp .env.example .env
+```
 
-# Run all migration files
-npm run migration:run
+## Run docker compose to start all adapter
+```bash
+$ docker-compose up -d
 ```
 
 ## Running the app

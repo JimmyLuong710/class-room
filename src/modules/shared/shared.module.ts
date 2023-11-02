@@ -1,30 +1,20 @@
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { MulterModule } from '@nestjs/platform-express';
 import config from 'config';
-import repositories from './repositories';
+import { diskStorage } from 'multer';
+import { User, UserSchema } from './schemas/user.schema';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import models from './models';
+import { Homework, HomeworkSchema } from './schemas/homework.schema';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       load: config,
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'mysql',
-        username: configService.get('db.username'),
-        password: configService.get('db.password'),
-        port: configService.get('db.port'),
-        database: configService.get('db.database'),
-        synchronize: true,
-        entities: [__dirname + '/../../databases/entities/*.entity.{js,ts}'],
-        logging: ['error'] as any,
-      }),
     }),
     PassportModule,
     JwtModule.registerAsync({
@@ -39,8 +29,31 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       },
       inject: [ConfigService],
     }),
+    MulterModule.register({
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file: Express.Multer.File, cb) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const fileExtension = file.mimetype.split('/')[1];
+          cb(null, `${uniqueSuffix}.${fileExtension}`);
+        },
+      }),
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        return {
+          uri: configService.get<string>('db.uri'),
+        };
+      },
+    }),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: Homework.name, schema: HomeworkSchema },
+    ]),
   ],
-  providers: [Logger, JwtStrategy, ...repositories],
-  exports: [Logger, TypeOrmModule, JwtStrategy, JwtModule, ConfigModule, ...repositories],
+  providers: [Logger, JwtStrategy, ...models],
+  exports: [Logger, JwtStrategy, JwtModule, ConfigModule, MulterModule, ...models],
 })
 export class SharedModule {}

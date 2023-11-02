@@ -3,8 +3,5 @@ require('dotenv').config();
 import { registerAs } from '@nestjs/config';
 
 export default registerAs('db', () => ({
-  username: process.env.MYSQL_USERNAME || 'admin',
-  password: process.env.MYSQL_PASSWORD || '1',
-  port: process.env.MYSQL_PORT || 3306,
-  database: process.env.MYSQL_DATABASE || 'class-room',
+  uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/class-room',
 }));

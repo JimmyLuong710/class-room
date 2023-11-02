@@ -9,8 +9,8 @@ export class ResponseTransformInterceptor<T> implements NestInterceptor<T> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data) => {
-        const metadata = data.metadata;
-        delete data.metadata;
+        const metadata = data?.metadata;
+        delete data?.metadata;
         return {
           code: 'ok',
           data: data.data || data,
