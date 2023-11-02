@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { EAttemptScore, EStudentReviewRole } from '../enums/schema.enum';
 import { Question, QuestionSchema } from './question.schema';
+import * as mongoosePaginate from 'mongoose-paginate-v2';
 
 export type HomeworkDocument = Homework & Document;
 
@@ -59,3 +60,4 @@ export class Homework {
 }
 
 export const HomeworkSchema = SchemaFactory.createForClass(Homework);
+HomeworkSchema.plugin(mongoosePaginate);

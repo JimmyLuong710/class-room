@@ -10,6 +10,7 @@ import { User, UserSchema } from './schemas/user.schema';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import models from './models';
 import { Homework, HomeworkSchema } from './schemas/homework.schema';
+import { Class, ClassSchema } from './schemas/class.schema';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { Homework, HomeworkSchema } from './schemas/homework.schema';
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Homework.name, schema: HomeworkSchema },
+      { name: Class.name, schema: ClassSchema },
     ]),
   ],
   providers: [Logger, JwtStrategy, ...models],

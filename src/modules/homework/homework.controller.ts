@@ -3,14 +3,16 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { FilesValidationPipe } from 'modules/shared/pipes/files-validation.pipe';
 import { AddHomeworkRequestDto } from './dtos/request.dto';
 import { HomeworkService } from './homework.service';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('homeworks')
+@ApiTags('Homework')
 export class HomeworkController {
   constructor(private readonly homeworkService: HomeworkService) {}
 
-  @Post('upload-file')
+  @Post('add-homework')
   @UseInterceptors(FilesInterceptor('files'))
-  async uploadFile(
+  async addHomework(
     @UploadedFiles(new FilesValidationPipe({ allowEmpty: false })) files: Express.Multer.File[],
     @Body() body: AddHomeworkRequestDto,
   ) {
