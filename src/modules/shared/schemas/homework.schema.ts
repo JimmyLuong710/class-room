@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { EAttemptScore, EStudentReviewRole } from '../enums/schema.enum';
+import { Question, QuestionSchema } from './question.schema';
 
 export type HomeworkDocument = Homework & Document;
 
@@ -12,28 +13,34 @@ export type HomeworkDocument = Homework & Document;
 })
 export class Homework {
   @Prop({ required: true })
-  sentences: string;
+  testFile: string;
+
+  @Prop({ required: true })
+  name: string;
+
+  @Prop({ required: true })
+  sentences: number;
 
   @Prop({ required: true })
   totalScore: number;
 
   @Prop()
-  solutionFile: string;
+  solutionFile?: string;
 
   @Prop()
-  solutionVideo: string;
+  solutionVideo?: string;
 
   @Prop()
-  password: string;
+  password?: string;
 
   @Prop()
-  duration: number;
+  duration?: number;
 
   @Prop()
-  startTime: Date;
+  startTime?: Date;
 
   @Prop()
-  dueTime: string;
+  dueTime?: string;
 
   @Prop()
   allowStudentReview: boolean;
@@ -46,6 +53,9 @@ export class Homework {
 
   @Prop({ required: true, enum: EAttemptScore })
   attemptScore: EAttemptScore;
+
+  @Prop({ type: [QuestionSchema], required: true })
+  questions: Question[];
 }
 
 export const HomeworkSchema = SchemaFactory.createForClass(Homework);

@@ -40,3 +40,6 @@ lerna-debug.log*
 
 # Database
 /data
+
+# Uploads
+/uploads

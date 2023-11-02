@@ -1,13 +1,19 @@
-import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Body, Controller, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { FilesValidationPipe } from 'modules/shared/pipes/files-validation.pipe';
+import { AddHomeworkRequestDto } from './dtos/request.dto';
+import { HomeworkService } from './homework.service';
 
 @Controller('homeworks')
 export class HomeworkController {
+  constructor(private readonly homeworkService: HomeworkService) {}
+
   @Post('upload-file')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: Express.Multer.File, @Body() body) {
-    console.log(file);
-    console.log(body);
-    return true;
+  @UseInterceptors(FilesInterceptor('files'))
+  async uploadFile(
+    @UploadedFiles(new FilesValidationPipe({ allowEmpty: false })) files: Express.Multer.File[],
+    @Body() body: AddHomeworkRequestDto,
+  ) {
+    await this.homeworkService.addHomework(files, body);
   }
 }

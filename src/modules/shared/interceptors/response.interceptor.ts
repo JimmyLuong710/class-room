@@ -13,7 +13,7 @@ export class ResponseTransformInterceptor<T> implements NestInterceptor<T> {
         delete data?.metadata;
         return {
           code: 'ok',
-          data: data.data || data,
+          data: data?.data || data,
           metadata,
         };
       }),

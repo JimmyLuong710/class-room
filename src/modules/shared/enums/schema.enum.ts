@@ -10,3 +10,8 @@ export enum EAttemptScore {
   LATEST_TIME = 'LATEST_TIME',
   HIGHEST_TIME = 'HIGHEST_TIME',
 }
+
+export enum EQuestionType {
+  MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
+  FILL_IN = 'FILL_IN',
+}
