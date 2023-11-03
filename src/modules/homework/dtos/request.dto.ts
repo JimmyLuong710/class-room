@@ -36,6 +36,10 @@ export class AddQuestionRequestDto {
 export class AddHomeworkRequestDto {
   @ApiProperty({ required: true })
   @IsNotEmpty()
+  class: string;
+
+  @ApiProperty({ required: true })
+  @IsNotEmpty()
   name: string;
 
   @ApiProperty({ required: true })

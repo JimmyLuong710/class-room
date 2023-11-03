@@ -13,8 +13,8 @@ export class AuthService {
     private readonly userModel: UserModel,
   ) {}
 
-  async generateTokens(username: string, role: string): Promise<string> {
-    return await this.jwtService.signAsync({ username, role });
+  async generateTokens(_id: string, username: string, role: string): Promise<string> {
+    return await this.jwtService.signAsync({ _id, username, role });
   }
 
   async hashPassword(password: string): Promise<string> {
@@ -41,7 +41,7 @@ export class AuthService {
     const checkPw = await this.checkPassword(loginDto.password, user.password);
     if (!checkPw) throw new BadRequestException('Username or password is incorrect.');
 
-    const accessToken = await this.generateTokens(user.username, user.role);
+    const accessToken = await this.generateTokens(user._id, user.username, user.role);
     return { accessToken };
   }
 }

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
 
 export type ClassDocument = Class & Document;
@@ -15,6 +15,10 @@ export class Class {
   @ApiProperty()
   @Prop({ required: true, unique: true })
   classId: string;
+
+  @ApiProperty()
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  owner: Types.ObjectId;
 
   @ApiProperty()
   @Prop({ required: true })

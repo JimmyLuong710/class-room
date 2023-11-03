@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { EAttemptScore, EStudentReviewRole } from '../enums/schema.enum';
 import { Question, QuestionSchema } from './question.schema';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
@@ -13,6 +13,10 @@ export type HomeworkDocument = Homework & Document;
   },
 })
 export class Homework {
+  @Prop({ required: true })
+  @Prop({ required: true, type: Types.ObjectId, ref: 'User' })
+  class: Types.ObjectId;
+
   @Prop({ required: true })
   testFile: string;
 
